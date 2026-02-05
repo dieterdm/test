@@ -1,0 +1,58 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: database-user1
+  namespace: openshift-gitops
+  finalizers:
+    - kubevirt.io/virtualMachineControllerFinalize
+  labels:
+    vmID: vm-26001
+spec:
+  preference:
+    kind: virtualmachineclusterpreference
+    name: centos.stream9
+    revisionName: database-user1-centos.stream9-v1beta1-a105467a-306c-4b82-a4fb-7aae38d4de34-1
+  runStrategy: Halted
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: database-user1
+    spec:
+      architecture: amd64
+      domain:
+        clock:
+          timezone: UTC
+        cpu:
+          cores: 1
+          sockets: 1
+        devices:
+          disks:
+            - bootOrder: 1
+              disk:
+                bus: virtio
+              name: vol-0
+            - disk:
+                bus: virtio
+              name: vol-1
+          inputs:
+            - bus: virtio
+              name: tablet
+              type: tablet
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: false
+          serial: 420a1bc9-5af5-3c99-23ec-1e39b5b1f2b2
+        machine:
+          type: pc-q35-rhel9.4.0
+        memory:
+          guest: 2Gi
+        resources: {}
+      volumes:
+        - name: vol-0
+          persistentVolumeClaim:
+            claimName: move-webapp-vmware-vm-26001-l2rxq
+        - name: vol-1
+          persistentVolumeClaim:
+            claimName: move-webapp-vmware-vm-26001-xv22l
